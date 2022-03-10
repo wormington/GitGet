@@ -73,7 +73,7 @@ const pullData = (rawData) => {
     for (let repoObj in rawData) {
         accum.push({
             name: rawData[repoObj].name,
-            updated: rawData[repoObj].updated_at.replace('T', ' ').replace('Z',''),
+            updated: rawData[repoObj].pushed_at.replace('T', ' ').replace('Z',''),
             owner: rawData[repoObj].owner.login,
             description: (rawData[repoObj].description  || 'No description.'),
             url: rawData[repoObj].html_url
@@ -108,7 +108,7 @@ const makeReq = async () => {
     repoList = await kit.rest.repos.listForUser({
         username: username,
         type: "public",
-        sort: "updated",
+        sort: "pushed",
         direction: "desc"
     });
 
@@ -123,8 +123,8 @@ const makeReq = async () => {
  * writeJson() is the function which writes the JSON data to a file if the user 
  * selects the 'write' mode.
  * 
- * @param {*} repoArr 
- * @param {*} writePath 
+ * @param {array: object} repoArr - The array of repositories which we want to write. 
+ * @param {*} writePath - The path to the file we should write output to.
  */
 const writeJson = async (repoArr, writePath) => {
     await fsProm.writeFile(writePath, JSON.stringify(repoArr));
@@ -137,17 +137,17 @@ const writeJson = async (repoArr, writePath) => {
 /**
  * main() is the primary function of the program. Call this to use GitGet.
  * 
- * @param {*} user      - The username of the user who we want to see the repositories of.
+ * @param {string} user      - The username of the user who we want to see the repositories of.
  * 
- * @param {*} auth      - The filepath of the GitHub API authorization token which we want to
-                        send the request with. Supplying this increases your API rate limit.      
+ * @param {string} auth      - The filepath of the GitHub API authorization token which we want to
+                            send the request with. Supplying this increases your API rate limit.      
 
- * @param {*} mode      - mode: 'write' or 'return'. 'write' will write the received JSON to 
-                        the file specified in the jsonPath constant below. 'return' will 
-                        cause the main() function to return the JSON as a string.
+ * @param {string} mode      - mode: 'write' or 'return'. 'write' will write the received JSON to 
+                            the file specified in the jsonPath constant below. 'return' will 
+                            cause the main() function to return the JSON as a string.
 
- * @param {*} writeDir  - The filepath which defines the location and name of the output 
-                         file. The name of the file should be included in the path.
+ * @param {string} writeDir  - The filepath which defines the location and name of the output 
+                            file. The name of the file should be included in the path.
  * 
  * @returns - the JSON string of repository objects if in 'return' mode.
  *          - null if an invalid mode is given.
