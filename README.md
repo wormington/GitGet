@@ -8,8 +8,8 @@ have the program return its data or write it to a file.
 This program can be run as a script or imported and run in another program. Just call exports.main() inside the file or import it
 and call the main() function.
 
-**Call within GitGet.js:**
-`exports.main(<target username>, <auth token path>, <mode: 'return' or 'write'>, <output path>);`
+**Call within GitGet.js:**\
+`exports.main(<target username>, <auth token path>, <mode: 'return' or 'write'>, <output path>);`\
 *Note: output path is only needed if in write mode.*
 
 **Call in another program:**
